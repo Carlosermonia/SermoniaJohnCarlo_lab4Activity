@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Stack App (Student Build)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="not-authenticated">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#/">Full-Stack App (SERMONIA JOHN CARLO)</a>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item role-logged-out"><a class="nav-link" href="#/login">Login</a></li>
+                <li class="nav-item role-logged-out"><a class="nav-link" href="#/register">Register</a></li>
+
+                <li class="nav-item dropdown role-logged-in">
+                    <a class="nav-link dropdown-toggle" href="#" id="usernameDisplay" data-bs-toggle="dropdown">User</a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#/profile">Profile</a></li>
+                        <li class="role-admin"><a class="dropdown-item" href="#/employees">Employees</a></li>
+                        <li class="role-admin"><a class="dropdown-item" href="#/accounts">Accounts</a></li>
+                        <li class="role-admin"><a class="dropdown-item" href="#/departments">Departments</a></li>
+                        <li><a class="dropdown-item" href="#/requests">My Requests</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#" onclick="logout()">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+   <main class="container mt-4">
+    <section id="home-page" class="page">
+        <div class="card p-5 mx-auto" style="max-width:800px; border:none; border-radius: 15px; background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+            <h1 class="display-5 fw-bold mb-3">Welcome to Full-Stack App</h1>
+            <p class="lead text-muted mb-4">A static prototype before backend integration. Simulates:</p>
+
+            <ul class="list-unstyled mb-4">
+                <li>✅ Email Registration + fake verification</li>
+                <li>✅ Login with JWT-like token simulation</li>
+                <li>✅ Role-based UI (Admin/User)</li>
+                <li>✅ CRUD for Employees, Departments, Requests</li>
+            </ul>
+
+            <div class="alert alert-info mt-3 mb-4" style="max-width: 500px;">
+                ⚠️ <strong>NOTE:</strong> All data is stored in <code>localStorage</code>
+            </div>
+
+            <div class="text-start">
+                <a href="#/login" class="btn btn-primary btn-lg ">
+                    Get Started ➡
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="register-page" class="page">
+    <div class="card p-4 mx-auto" style="max-width:400px;">
+        <h3>Register Account</h3>
+        <input id="regFirst" class="form-control mb-2" placeholder="First Name">
+        <input id="regLast" class="form-control mb-2" placeholder="Last Name">
+        <input id="regEmail" class="form-control mb-2" placeholder="Email">
+        <input id="regPass" type="password" class="form-control mb-3" placeholder="Password">
+        
+        <div class="d-grid gap-2">
+            <button class="btn btn-success" onclick="register()">Sign Up</button>
+            <a href="#/" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </div>
+</section>
+
+    <section id="verify-email-page" class="page">
+        <div class="card p-4 mx-auto text-center" style="max-width:400px;">
+            <h3>Verify Your Email</h3>
+            <p id="verifyText" class="alert alert-info">✅ A verification link has been sent to your email address.</p>
+            <button class="btn btn-success w-100" onclick="simulateVerification()">✅ Simulate Email Verification</button>
+        </div>
+    </section>
+
+    <section id="login-page" class="page">
+    <div class="card p-4 mx-auto" style="max-width:400px;">
+        <div id="loginSuccessMessage" class="alert alert-success d-none">
+            ✅ Email verified! You may now log in.
+        </div>
+
+        <h3>Login</h3>
+        <label class="form-label">Email</label>
+        <input id="loginEmail" class="form-control mb-2">
+        
+        <label class="form-label">Password</label>
+        <input id="loginPassword" type="password" class="form-control mb-3">
+        
+        <div class="d-grid gap-2 d-md-block">
+            <button class="btn btn-primary px-4" onclick="login()">Login</button>
+            <a href="#/" class="btn btn-outline-secondary px-4">Cancel</a>
+        </div>
+    </div>
+</section>
+
+    <section id="profile-page" class="page">
+        <h3>My Profile</h3>
+        <div id="profileContent">
+            
+        </div>
+    </section>
+
+    <section id="employees-page" class="page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Employees</h2>
+        <button class="btn btn-success" onclick="toggleEmployeeForm()">+ Add Employee</button>
+    </div>
+
+    <div id="employeeFormContainer" class="card p-3 mb-4 d-none">
+    <h5>Add New Employee</h5>
+    <div class="row g-2">
+        <div class="col-md-3">
+            <input type="text" id="empName" class="form-control" placeholder="Full Name">
+        </div>
+        <div class="col-md-3">
+            <input type="text" id="empPos" class="form-control" placeholder="Position">
+        </div>
+        <div class="col-md-2">
+    <select id="empDept" class="form-control">
+        <option value="">Select Dept</option>
+    </select>
+</div>
+        <div class="col-md-2">
+            <input type="date" id="empHireDate" class="form-control">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" onclick="addEmployee()">Save</button>
+        </div>
+    </div>
+</div>
+
+    <div class="table-responsive card p-3">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Dept</th>
+                    <th>Hire Date</th> <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="employeesList"></tbody>
+        </table>
+    </div>
+</section>
+<section id="departments-page" class="page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Departments</h2>
+        <button class="btn btn-success" onclick="toggleDeptForm()">+ Add Department</button>
+    </div>
+
+    <div id="deptFormContainer" class="card p-3 mb-4 d-none">
+        <h5 id="deptFormTitle">Add New Department</h5>
+        <div class="row g-2">
+            <div class="col-md-5">
+                <input type="text" id="deptName" class="form-control" placeholder="Department Name">
+            </div>
+            <div class="col-md-5">
+                <input type="text" id="deptDesc" class="form-control" placeholder="Description">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" onclick="saveDepartment()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive card p-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="departmentsList"></tbody>
+        </table>
+    </div>
+</section>
+
+   <section id="accounts-page" class="page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Accounts</h2>
+        <button class="btn btn-success" onclick="toggleAccountForm()">+ Add Account</button>
+    </div>
+
+    <div id="accountFormContainer" class="card p-3 mb-4 d-none">
+        <h5 id="accFormTitle">Add New Account</h5>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">First Name</label>
+                <input type="text" id="accFirst" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Last Name</label>
+                <input type="text" id="accLast" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input type="email" id="accEmail" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Password</label>
+                <input type="password" id="accPass" class="form-control" placeholder="Leave blank to keep current">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Role</label>
+                <select id="accRole" class="form-select">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="col-md-6 d-flex align-items-end">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="accVerified">
+                    <label class="form-check-label" for="accVerified">Verified Account</label>
+                </div>
+            </div>
+            <div class="col-12 text-end">
+                <button class="btn btn-secondary me-2" onclick="toggleAccountForm()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveAccount()">Save Account</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive card p-3">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Verified</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="accountsList"></tbody>
+        </table>
+    </div>
+</section>
+
+    <section id="requests-page" class="page">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>My Requests</h2>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#requestModal">+ New Request</button>
+        </div>
+        <div id="requestsContainer" class="card p-4 text-center">
+            <div id="emptyRequests">
+                <p class="text-muted">You have no requests yet.</p>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#requestModal">Create One</button>
+            </div>
+            <table id="requestsTable" class="table table-hover d-none">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Items</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th class="admin-only">Actions</th> </tr>
+    </thead>
+    <tbody id="requestsList"></tbody>
+</table>
+        </div>
+    </section>
+</main>
+       <div class="modal fade" id="requestModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <label>Type</label>
+                <select id="reqType" class="form-select mb-3">
+                    <option>Equipment</option>
+                    <option>Leave</option>
+                    <option>Resources</option>
+                </select>
+                
+                <label>Items</label>
+                <div id="dynamicItemsContainer">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" placeholder="Item name">
+                        <input type="number" class="form-control" value="1" style="max-width: 80px;">
+                        <button class="btn btn-outline-secondary" onclick="addNewItemField()">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+    <button class="btn btn-primary w-100" onclick="submitRequest()">Submit Request</button>
+</div>
+        </div>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
